@@ -1,7 +1,7 @@
 import UIKit
 
 class TodoListViewController: UITableViewController {
-    let itemArray = ["Find Mike", "buy eggos", "Destroy Demogorgon"]
+    let itemArray = ["Find Mike", "Buy eggos", "Destroy Demogorgon"]
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -14,5 +14,19 @@ class TodoListViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToDoItemCell", for: indexPath)
         cell.textLabel?.text = itemArray[indexPath.row]
         return cell
+    }
+
+    // MARK: - TableView Datasource Methods
+
+    override func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .none
+        } else {
+            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+        }
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
