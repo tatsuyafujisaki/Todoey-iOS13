@@ -20,7 +20,7 @@ class CategoryViewController: SwipeTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
         cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
-        cell.backgroundColor = UIColor.randomFlat()
+        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].colour ?? "3478F6")
         return cell
     }
 
@@ -55,14 +55,7 @@ class CategoryViewController: SwipeTableViewController {
 
     func loadCategories() {
         categories = realm.objects(Category.self)
-//        let request: NSFetchRequest<Category> = Category.fetchRequest()
-//        do {
-//            categories = try context.fetch(request)
-//        } catch {
-//            print("Error loading categories \(error)")
-//        }
-//
-//        tableView.reloadData()
+        tableView.reloadData()
     }
 
     // MARK: - Delete Data from Swipe
@@ -88,6 +81,7 @@ class CategoryViewController: SwipeTableViewController {
         let action = UIAlertAction(title: "Add", style: .default) { _ in
             let newCategory = Category()
             newCategory.name = textField.text!
+            newCategory.colour = UIColor.randomFlat().hexValue()
 
             self.save(category: newCategory)
         }
