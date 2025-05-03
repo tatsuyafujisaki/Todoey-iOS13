@@ -5,18 +5,13 @@ import UIKit
 class CategoryViewController: SwipeTableViewController {
     let realm = try! Realm()
     var categories: Results<Category>?
-//
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        loadCategories()
-//    }
 
     override func viewWillAppear(_ animated: Bool) {
         guard let navBar = navigationController?.navigationBar else {
             fatalError("Navigation controller does not exist.")
         }
-        // If you call loadCategories() in viewDidLoad() function,
-        // the cell colors will not be as expected when you go back from TodoListViewController.
+        // If you call the loadCategories function from the viewDidLoad function,
+        // the cell colors may not appear as expected when returning from TodoListViewController.
         loadCategories()
         navBar.backgroundColor = UIColor(hexString: "1D9BF6")
     }
