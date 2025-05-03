@@ -5,10 +5,20 @@ import UIKit
 class CategoryViewController: SwipeTableViewController {
     let realm = try! Realm()
     var categories: Results<Category>?
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        loadCategories()
+//    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
+        guard let navBar = navigationController?.navigationBar else {
+            fatalError("Navigation controller does not exist.")
+        }
+        // If you call loadCategories() in viewDidLoad() function,
+        // the cell colors will not be as expected when you go back from TodoListViewController.
         loadCategories()
+        navBar.backgroundColor = UIColor(hexString: "1D9BF6")
     }
 
     // MARK: - TableView Datasource Methods
@@ -19,8 +29,12 @@ class CategoryViewController: SwipeTableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
-        cell.backgroundColor = UIColor(hexString: categories?[indexPath.row].colour ?? "3478F6")
+        if let category = categories?[indexPath.row] {
+            cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Added Yet"
+            guard let categoryColour = UIColor(hexString: category.colour) else { fatalError() }
+            cell.backgroundColor = categoryColour
+            cell.textLabel?.textColor = UIColor(contrastingBlackOrWhiteColorOn: categoryColour, isFlat: true)
+        }
         return cell
     }
 
